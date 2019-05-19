@@ -94,8 +94,8 @@ void draw_grid(SDL_Renderer *renderer,Point **grid, size_grid size
 	       , size_grid *min_max)
 {
 	int i, j;
-	float scale_x =  5;//(min_max[1].width - min_max[0].width);
-	float scale_y =  5;//(min_max[1].height - min_max[0].height);
+	float scale_x = (min_max[1].width - min_max[0].width);
+	float scale_y = (min_max[1].height - min_max[0].height);
 
 	for (i = 0; i < size.height ; i++)
 	{
@@ -103,16 +103,16 @@ void draw_grid(SDL_Renderer *renderer,Point **grid, size_grid size
 		{
 			if (i < size.height - 1)
 				SDL_RenderDrawLine(renderer,
-				   size.width / 2 + scale_x *  (grid[i][j].x - min_max[0].width)/10 ,
-				   size.height / 2 + scale_y * (grid[i][j].y - min_max[0].height)/10 ,
-				   size.width / 2 + scale_x *  (grid[i + 1][j].x - min_max[0].width)/10 ,
-				   size.height / 2 + scale_y * (grid[i + 1][j].y - min_max[0].height)/10);
+				   640 *  (grid[i][j].x  - min_max[0].width) / scale_x,
+				   480 * (grid[i][j].y - min_max[0].height) / scale_y,
+				   640 *  (grid[i + 1][j].x - min_max[0].width) / scale_x,
+				   480 * (grid[i + 1][j].y - min_max[0].height) / scale_y);
 			if (j < size.width - 1)
 				SDL_RenderDrawLine(renderer,
-				   size.width / 2 + scale_x  * (grid[i][j].x - min_max[0].width)/10 ,
-				   size.height / 2 + scale_y * (grid[i][j].y - min_max[0].height)/10 ,
-				   size.width / 2 + scale_x  * (grid[i][j + 1].x - min_max[0].width)/10 ,
-				   size.height / 2 + scale_y * (grid[i][j + 1].y - min_max[0].height) / 10) ;
+				   640  * (grid[i][j].x - min_max[0].width) / scale_x,
+				   480 * (grid[i][j].y - min_max[0].height) / scale_y,
+				   640  * (grid[i][j + 1].x - min_max[0].width) / scale_x,
+				   480 * (grid[i][j + 1].y - min_max[0].height) / scale_y);
 		}
 	}
 }

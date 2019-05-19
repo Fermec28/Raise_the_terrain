@@ -51,7 +51,7 @@ void calculate_range(Point **grid, size_grid *min_max, size_grid size)
 				min_max[0].height =  grid[i][j].y;
 			if(grid[i][j].x > min_max[1].width)
 				min_max[1].width =  grid[i][j].x;
-			if(grid[i][j].x > min_max[1].height)
+			if(grid[i][j].y > min_max[1].height)
 				min_max[1].height =  grid[i][j].y;
 		}
 	}
