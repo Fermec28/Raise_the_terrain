@@ -10,6 +10,8 @@ int main(int argc, char* argv[])
 		delta.width = SIZE_WINDOW.width / size.width;
 		delta.height = SIZE_WINDOW.height / size.height;
 		calculate_points(&grid, argv[1], delta);
+		rot_transform(&grid, size, 45, 'z');
+		rot_transform(&grid, size, -35, 'y');
 		sdl(grid, size, SIZE_WINDOW);
 	}
 	return 0;

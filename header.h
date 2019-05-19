@@ -34,4 +34,5 @@ void draw_grid(SDL_Renderer* renderer,Point **grid, size_grid size);
 void sdl(Point ** grid, size_grid size, size_grid SIZE_WINDOW);
 void calculate_points(Point ***grid, const char *filename, size_grid delta);
 void free_grid(Point **grid, size_grid size);
+void rot_transform(Point ***grid, size_grid size, int angle, char axis);
 #endif
