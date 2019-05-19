@@ -31,7 +31,7 @@ int init_instance(SDL_Instance *);
 Point** build_grid(int, int);
 size_grid get_size(const char *filename);
 void draw_grid(SDL_Renderer* renderer,Point **grid, size_grid size);
-void sdl(Point ** grid, size_grid size);
-void calculate_points (Point ***grid, const char *filename);
+void sdl(Point ** grid, size_grid size, size_grid SIZE_WINDOW);
+void calculate_points(Point ***grid, const char *filename, size_grid delta);
 void free_grid(Point **grid, size_grid size);
 #endif

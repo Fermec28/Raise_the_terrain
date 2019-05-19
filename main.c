@@ -1,19 +1,19 @@
 #include "header.h"
-
-
 int main(int argc, char* argv[])
 {
 	if (argc == 2)
 	{
 		size_grid size = get_size(argv[1]);
 		Point **grid = build_grid(size.width, size.height);
-		calculate_points(&grid, argv[1]);
-		sdl(grid, size);
+		size_grid SIZE_WINDOW = {640, 480}, delta;
+
+		delta.width = SIZE_WINDOW.width / size.width;
+		delta.height = SIZE_WINDOW.height / size.height;
+		calculate_points(&grid, argv[1], delta);
+		sdl(grid, size, SIZE_WINDOW);
 	}
 	return 0;
 }
-
-
 void free_grid(Point **grid, size_grid size)
 {
 	int i, j;
@@ -41,23 +41,28 @@ Point** build_grid(int width, int height)
 	return grid;
 }
 
-void sdl(Point ** grid, size_grid size)
+void sdl(Point ** grid, size_grid size, size_grid SIZE_WINDOW)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) == 0)
 	{
 		SDL_Window* window = NULL;
 		SDL_Renderer* renderer = NULL;
 
-		if (SDL_CreateWindowAndRenderer(640, 480, 0, &window, &renderer) == 0)
+		if (SDL_CreateWindowAndRenderer(SIZE_WINDOW.width,
+						 SIZE_WINDOW.height, 0,
+						 &window, &renderer) == 0)
 		{
 			SDL_bool done = SDL_FALSE;
 
 			while (!done)
 			{
 				SDL_Event event;
-				SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+
+				SDL_SetRenderDrawColor(renderer, 0, 0, 0,
+						       SDL_ALPHA_OPAQUE);
 				SDL_RenderClear(renderer);
-				SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+				SDL_SetRenderDrawColor(renderer, 255, 255, 255,
+						       SDL_ALPHA_OPAQUE);
 				draw_grid(renderer, grid, size);
 				SDL_RenderPresent(renderer);
 
@@ -80,6 +85,7 @@ void sdl(Point ** grid, size_grid size)
 	}
 	SDL_Quit();
 }
+
 void draw_grid(SDL_Renderer* renderer,Point **grid, size_grid size)
 {
 	int i, j;
@@ -92,13 +98,13 @@ void draw_grid(SDL_Renderer* renderer,Point **grid, size_grid size)
 				SDL_RenderDrawLine(renderer,
 						   grid[i][j].x,
 						   grid[i][j].y,
-						   grid[i][j + 1].x,
-						   grid[i][j].y);
+						   grid[i + 1][j].x,
+						   grid[i + 1][j].y);
 			if (j < size.width - 1)
 				SDL_RenderDrawLine(renderer,
 						   grid[i][j].x,
 						   grid[i][j].y,
-						   grid[i][j].x,
+						   grid[i][j + 1].x,
 						   grid[i][j + 1].y);
 		}
 	}

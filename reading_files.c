@@ -1,6 +1,6 @@
 #include "header.h"
 
-void calculate_points (Point ***grid, const char *filename)
+void calculate_points(Point ***grid, const char *filename, size_grid delta)
 {
 	FILE *fp;
 	char *line = NULL;
@@ -13,12 +13,12 @@ void calculate_points (Point ***grid, const char *filename)
 		exit(EXIT_FAILURE);
 	while ((read = getline(&line, &len, fp) != -1))
 	{
-		printf("value of line %s\n", line);
 		j = 0;
 		line = strtok(line, " ");
 		while( line != NULL )
 		{
-			printf("line %s -- i:%d ; j:%d\n", line,i,j);
+			(*grid)[i][j].x = delta.width * j;
+			(*grid)[i][j].y = delta.height * i;
 			(*grid)[i][j].z = atoi(line);
 			line = strtok(NULL, " \n");
 			j++;
