@@ -6,13 +6,15 @@ int main(int argc, char* argv[])
 		size_grid size = get_size(argv[1]);
 		Point **grid = build_grid(size.width, size.height);
 		size_grid SIZE_WINDOW = {640, 480}, delta;
+		size_grid min_max[2];
 
 		delta.width = SIZE_WINDOW.width / size.width;
 		delta.height = SIZE_WINDOW.height / size.height;
 		calculate_points(&grid, argv[1], delta);
-		rot_transform(&grid, size, 45, 'z');
-		rot_transform(&grid, size, -35, 'y');
-		sdl(grid, size, SIZE_WINDOW);
+		rot_transform(&grid, size, -35, 'z');
+		rot_transform(&grid, size, 45, 'x');
+		calculate_range(grid, min_max , size);
+		sdl(grid, size, SIZE_WINDOW, min_max);
 	}
 	return 0;
 }
@@ -43,7 +45,7 @@ Point** build_grid(int width, int height)
 	return grid;
 }
 
-void sdl(Point ** grid, size_grid size, size_grid SIZE_WINDOW)
+void sdl(Point **grid, size_grid size, size_grid SIZE_WINDOW, size_grid *min_max)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) == 0)
 	{
@@ -65,7 +67,7 @@ void sdl(Point ** grid, size_grid size, size_grid SIZE_WINDOW)
 				SDL_RenderClear(renderer);
 				SDL_SetRenderDrawColor(renderer, 255, 255, 255,
 						       SDL_ALPHA_OPAQUE);
-				draw_grid(renderer, grid, size);
+				draw_grid(renderer, grid, size, min_max);
 				SDL_RenderPresent(renderer);
 
 				while (SDL_PollEvent(&event)) {
@@ -88,9 +90,12 @@ void sdl(Point ** grid, size_grid size, size_grid SIZE_WINDOW)
 	SDL_Quit();
 }
 
-void draw_grid(SDL_Renderer* renderer,Point **grid, size_grid size)
+void draw_grid(SDL_Renderer *renderer,Point **grid, size_grid size
+	       , size_grid *min_max)
 {
 	int i, j;
+	float scale_x =  5;//(min_max[1].width - min_max[0].width);
+	float scale_y =  5;//(min_max[1].height - min_max[0].height);
 
 	for (i = 0; i < size.height ; i++)
 	{
@@ -98,16 +103,16 @@ void draw_grid(SDL_Renderer* renderer,Point **grid, size_grid size)
 		{
 			if (i < size.height - 1)
 				SDL_RenderDrawLine(renderer,
-						   grid[i][j].x,
-						   grid[i][j].y,
-						   grid[i + 1][j].x,
-						   grid[i + 1][j].y);
+				   size.width / 2 + scale_x *  (grid[i][j].x - min_max[0].width)/10 ,
+				   size.height / 2 + scale_y * (grid[i][j].y - min_max[0].height)/10 ,
+				   size.width / 2 + scale_x *  (grid[i + 1][j].x - min_max[0].width)/10 ,
+				   size.height / 2 + scale_y * (grid[i + 1][j].y - min_max[0].height)/10);
 			if (j < size.width - 1)
 				SDL_RenderDrawLine(renderer,
-						   grid[i][j].x,
-						   grid[i][j].y,
-						   grid[i][j + 1].x,
-						   grid[i][j + 1].y);
+				   size.width / 2 + scale_x  * (grid[i][j].x - min_max[0].width)/10 ,
+				   size.height / 2 + scale_y * (grid[i][j].y - min_max[0].height)/10 ,
+				   size.width / 2 + scale_x  * (grid[i][j + 1].x - min_max[0].width)/10 ,
+				   size.height / 2 + scale_y * (grid[i][j + 1].y - min_max[0].height) / 10) ;
 		}
 	}
 }
