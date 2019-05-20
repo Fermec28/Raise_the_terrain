@@ -22,7 +22,6 @@ int main(int argc, char *argv[])
 		calculate_points(&grid, argv[1], delta);
 		rot_transform(&grid, size, -35, 'z');
 		rot_transform(&grid, size, 45, 'x');
-		calculate_range(grid, min_max, size);
 		sdl(grid, size, SIZE_WINDOW, min_max);
 	}
 	return (0);
@@ -117,9 +116,12 @@ void draw_grid(SDL_Renderer *renderer, Point **grid, size_grid size
 	       , size_grid *min_max)
 {
 	int i, j;
-	float scale_x = (min_max[1].width - min_max[0].width);
-	float scale_y = (min_max[1].height - min_max[0].height);
+	float scale_x;
+	float scale_y;
 
+	calculate_range(grid, min_max, size);
+	scale_x = (min_max[1].width - min_max[0].width);
+	scale_y = (min_max[1].height - min_max[0].height);
 	for (i = 0; i < size.height ; i++)
 	{
 		for (j = 0; j < size.width; j++)

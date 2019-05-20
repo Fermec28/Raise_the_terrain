@@ -17,7 +17,10 @@ void rot_transform(Point ***grid, size_grid size, int angle, char axis)
 	{
 		for (j = 0; j < size.width; j++)
 		{
-			aux = (*grid)[i][j];
+			aux.x = (*grid)[i][j].x;
+			aux.y = (*grid)[i][j].y;
+			aux.z = (*grid)[i][j].z;
+
 			if (axis == 'x')
 			{
 				(*grid)[i][j].y = aux.y * cos(a) - aux.z * sin(a);
