@@ -1,6 +1,12 @@
 #include "header.h"
-
-
+/**
+ * rot_transform - rotate point on axis
+ * @grid: points x-y-z to rotate
+ * @size: count of points
+ * @angle: angle to rotate
+ * @axis: axis torotate x-y-z
+ *
+ */
 void rot_transform(Point ***grid, size_grid size, int angle, char axis)
 {
 	Point aux;
@@ -30,8 +36,12 @@ void rot_transform(Point ***grid, size_grid size, int angle, char axis)
 		}
 	}
 }
-
-
+/**
+ * calculate_range - calculate the max and min of the points
+ * @grid: points to draw
+ * @min_max: array will contain the min points and max points
+ * @size: quantity of points
+ */
 void calculate_range(Point **grid, size_grid *min_max, size_grid size)
 {
 	int i, j;
@@ -45,13 +55,13 @@ void calculate_range(Point **grid, size_grid *min_max, size_grid size)
 	{
 		for (j = 0; j < size.width; j++)
 		{
-			if(grid[i][j].x < min_max[0].width)
+			if (grid[i][j].x < min_max[0].width)
 				min_max[0].width =  grid[i][j].x;
-			if(grid[i][j].y < min_max[0].height)
+			if (grid[i][j].y < min_max[0].height)
 				min_max[0].height =  grid[i][j].y;
-			if(grid[i][j].x > min_max[1].width)
+			if (grid[i][j].x > min_max[1].width)
 				min_max[1].width =  grid[i][j].x;
-			if(grid[i][j].y > min_max[1].height)
+			if (grid[i][j].y > min_max[1].height)
 				min_max[1].height =  grid[i][j].y;
 		}
 	}

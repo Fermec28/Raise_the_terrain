@@ -1,23 +1,38 @@
 #include "header.h"
-int main(int argc, char* argv[])
+/**
+ * main - Entry point
+ * @argc: count of arguments
+ * @argv: value of arguments
+ * Return: alway success
+ */
+int main(int argc, char *argv[])
 {
+	size_grid size;
+
+	Point **grid;
+	size_grid SIZE_WINDOW, delta;
+	size_grid min_max[2];
+
 	if (argc == 2)
 	{
-		size_grid size = get_size(argv[1]);
-		Point **grid = build_grid(size.width, size.height);
-		size_grid SIZE_WINDOW = {640, 480}, delta;
-		size_grid min_max[2];
-
+		SIZE_WINDOW = {640, 480}
+		size = get_size(argv[1]);
+		grid = build_grid(size.width, size.height);
 		delta.width = SIZE_WINDOW.width / size.width;
 		delta.height = SIZE_WINDOW.height / size.height;
 		calculate_points(&grid, argv[1], delta);
 		rot_transform(&grid, size, -35, 'z');
 		rot_transform(&grid, size, 45, 'x');
-		calculate_range(grid, min_max , size);
+		calculate_range(grid, min_max, size);
 		sdl(grid, size, SIZE_WINDOW, min_max);
 	}
-	return 0;
+	return (0);
 }
+/**
+ * free_grid -  free the grid
+ * @grid: grid to be freeded
+ * @size: size of the grid
+ */
 void free_grid(Point **grid, size_grid size)
 {
 	int i, j;
@@ -28,9 +43,15 @@ void free_grid(Point **grid, size_grid size)
 	}
 	free(grid);
 }
-Point** build_grid(int width, int height)
+/**
+ * build_grid - create the required space on memory
+ * @width: width of the grid
+ * @height: height of the grid
+ * Return: Array of Pointers
+ */
+Point **build_grid(int width, int height)
 {
-	Point **grid = malloc(sizeof(Point*) * height);
+	Point **grid = malloc(sizeof(Point *) * height);
 	int i, j;
 
 	for (i = 0; i < height; i++)
@@ -42,18 +63,24 @@ Point** build_grid(int width, int height)
 			exit(1);
 		}
 	}
-	return grid;
+	return (grid);
 }
-
-void sdl(Point **grid, size_grid size, size_grid SIZE_WINDOW, size_grid *min_max)
+/**
+ * sdl - sdl funcitionality
+ * @grid: all points
+ * @size: size of the grid
+ * @S_WINDOW: size of the windoe
+ * @min_ma: range of the points
+ */
+void sdl(Point **grid, size_grid size, size_grid S_WINDOW, size_grid *min_ma)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) == 0)
 	{
-		SDL_Window* window = NULL;
-		SDL_Renderer* renderer = NULL;
+		SDL_Window *window = NULL;
+		SDL_Renderer *renderer = NULL;
 
-		if (SDL_CreateWindowAndRenderer(SIZE_WINDOW.width,
-						 SIZE_WINDOW.height, 0,
+		if (SDL_CreateWindowAndRenderer(S_WINDOW.width,
+						 S_WINDOW.height, 0,
 						 &window, &renderer) == 0)
 		{
 			SDL_bool done = SDL_FALSE;
@@ -67,30 +94,35 @@ void sdl(Point **grid, size_grid size, size_grid SIZE_WINDOW, size_grid *min_max
 				SDL_RenderClear(renderer);
 				SDL_SetRenderDrawColor(renderer, 255, 255, 255,
 						       SDL_ALPHA_OPAQUE);
-				draw_grid(renderer, grid, size, min_max);
+				draw_grid(renderer, grid, size, min_ma);
 				SDL_RenderPresent(renderer);
 
-				while (SDL_PollEvent(&event)) {
-					if (event.type == SDL_QUIT) {
+				while (SDL_PollEvent(&event))
+				{
+					if (event.type == SDL_QUIT)
+					{
 						done = SDL_TRUE;
-					        free_grid(grid, size);
+						free_grid(grid, size);
 					}
 				}
 			}
 		}
 
-		if (renderer) {
+		if (renderer)
 			SDL_DestroyRenderer(renderer);
-		}
 		if (window)
-		{
 			SDL_DestroyWindow(window);
-		}
 	}
 	SDL_Quit();
 }
-
-void draw_grid(SDL_Renderer *renderer,Point **grid, size_grid size
+/**
+ * draw_grid - Draw the gride on  window
+ * @renderer: Object to print the objects
+ * @grid: array of pointers
+ * @size: size of the grud
+ * @min_max: range of the points
+ */
+void draw_grid(SDL_Renderer *renderer, Point **grid, size_grid size
 	       , size_grid *min_max)
 {
 	int i, j;
