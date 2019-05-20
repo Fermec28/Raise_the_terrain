@@ -10,12 +10,11 @@ int main(int argc, char *argv[])
 	size_grid size;
 
 	Point **grid;
-	size_grid SIZE_WINDOW, delta;
+	size_grid SIZE_WINDOW = {640, 480}, delta;
 	size_grid min_max[2];
 
 	if (argc == 2)
 	{
-		SIZE_WINDOW = {640, 480}
 		size = get_size(argv[1]);
 		grid = build_grid(size.width, size.height);
 		delta.width = SIZE_WINDOW.width / size.width;
@@ -96,15 +95,7 @@ void sdl(Point **grid, size_grid size, size_grid S_WINDOW, size_grid *min_ma)
 						       SDL_ALPHA_OPAQUE);
 				draw_grid(renderer, grid, size, min_ma);
 				SDL_RenderPresent(renderer);
-
-				while (SDL_PollEvent(&event))
-				{
-					if (event.type == SDL_QUIT)
-					{
-						done = SDL_TRUE;
-						free_grid(grid, size);
-					}
-				}
+				handle_events(event, grid, size, &done);
 			}
 		}
 

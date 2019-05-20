@@ -55,4 +55,5 @@ void calculate_points(Point ***grid, const char *filename, size_grid delta);
 void free_grid(Point **grid, size_grid size);
 void rot_transform(Point ***grid, size_grid size, int angle, char axis);
 void calculate_range(Point **grid, size_grid *min_max, size_grid size);
+void handle_events(SDL_Event event, Point **grid, size_grid size, SDL_bool *done);
 #endif
